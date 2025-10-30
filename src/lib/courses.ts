@@ -373,6 +373,176 @@ a:hover {
         ]
     },
     // =================================================================
+    // Chapter: CSSの応用
+    // =================================================================
+    {
+        id: 'css-animations',
+        chapter: 'CSSの応用',
+        title: 'トランジションとアニメーション',
+        pages: [
+            {
+                title: 'transitionによる変化',
+                description: '`transition`プロパティを使うと、CSSプロパティの値が変化する際に、一定時間をかけてスムーズに変化させることができます。これにより、ホバーエフェクトなどがより滑らかになります。',
+                initialHtml: '<div class="box"></div>',
+                initialCss: `.box {
+    width: 100px;
+    height: 100px;
+    background-color: #3b82f6;
+    transition: background-color 0.5s;
+}
+
+.box:hover {
+    background-color: #ef4444;
+}`,
+                initialJs: '',
+                exercise: '`.box`のホバー時に`transform: scale(1.2);`を追加し、`transition`の対象に`transform`も加えてみましょう。（例: `transition: background-color 0.5s, transform 0.5s;`）'
+            },
+            {
+                title: 'transitionの個別指定',
+                description: '`transition`は、`transition-property`, `transition-duration`, `transition-timing-function`, `transition-delay`の4つのプロパティをまとめて指定するショートハンドです。個別で指定することで、より細かい制御が可能です。',
+                initialHtml: '<div class="box"></div>',
+                initialCss: `.box {
+    width: 100px;
+    height: 100px;
+    background-color: #16a34a;
+    /* property duration timing-function delay */
+    transition: transform 1s ease-in-out 0.2s;
+}
+
+.box:hover {
+    transform: translateX(100px);
+}`,
+                initialJs: '',
+                exercise: '`transition`の`delay`（遅延）を`1s`に変更して、ホバーしてから1秒後にアニメーションが開始するようにしてみましょう。'
+            },
+            {
+                title: 'keyframesによるアニメーション',
+                description: '`@keyframes`を使うと、一連の動きを定義して、より複雑なアニメーションを作成できます。`from` (0%) から `to` (100%)、またはパーセンテージで各時点のスタイルを指定します。',
+                initialHtml: '<div class="box"></div>',
+                initialCss: `/* アニメーションの定義 */
+@keyframes slide-in {
+    from {
+        transform: translateX(-100%);
+    }
+    to {
+        transform: translateX(0);
+    }
+}
+
+.box {
+    width: 100px;
+    height: 100px;
+    background-color: #f97316;
+    /* 定義したアニメーションを適用 */
+    animation-name: slide-in;
+    animation-duration: 2s;
+}`,
+                initialJs: '',
+                exercise: '`@keyframes`の名前を`slide-in`から`my-animation`に変更し、`.box`の`animation-name`も合わせて修正してみましょう。'
+            },
+            {
+                title: 'animationのプロパティ',
+                description: '`animation`プロパティもショートハンドで、`animation-name`, `animation-duration`, `animation-timing-function`, `animation-delay`, `animation-iteration-count` (繰り返し回数), `animation-direction` (再生方向) などを指定できます。',
+                initialHtml: '<div class="box"></div>',
+                initialCss: `@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.box {
+    width: 100px;
+    height: 100px;
+    background-color: #8b5cf6;
+    animation: spin 3s linear infinite; /* name duration timing-function iteration-count */
+}`,
+                initialJs: '',
+                exercise: '`animation-iteration-count`の値である`infinite`（無限ループ）を`3`に変更して、アニメーションが3回で停止することを確認してみましょう。'
+            }
+        ]
+    },
+    {
+        id: 'css-pseudo-elements',
+        chapter: 'CSSの応用',
+        title: '疑似要素',
+        pages: [
+            {
+                title: '疑似要素 ::before と ::after',
+                description: '疑似要素 `::before` と `::after` は、選択した要素の「最初の子要素」または「最後の子要素」として、CSSからコンテンツを追加できる特殊な要素です。HTMLを直接編集せずに、装飾的な要素を追加するのによく使われます。',
+                initialHtml: '<p class="greeting">こんにちは</p>',
+                initialCss: `.greeting::before {
+    content: "「"; /* 開始の引用符を追加 */
+    color: #0ea5e9;
+}
+
+.greeting::after {
+    content: "」"; /* 終了の引用符を追加 */
+    color: #0ea5e9;
+}`,
+                initialJs: '',
+                exercise: '`::before`と`::after`の`content`の値を、それぞれ`"【"`と`"】"`に変更してみましょう。'
+            },
+            {
+                title: 'contentプロパティ',
+                description: '疑似要素を機能させるには、`content`プロパティが必須です。空の文字列（`""`）を指定することもでき、その場合はコンテンツは挿入されませんが、図形などを作成するための「箱」として利用できます。`attr()`関数を使うと、HTML要素の属性値を取得して表示することもできます。',
+                initialHtml: '<a href="https://example.com" data-text="リンク先">リンク</a>',
+                initialCss: `a::after {
+    content: " (" attr(href) ")"; /* href属性の値を表示 */
+    font-size: 0.8em;
+    color: #64748b;
+}`,
+                initialJs: '',
+                exercise: '`::after`の`content`を`" [" attr(data-text) "]"`に変更して、`data-text`属性の値を表示してみましょう。'
+            },
+            {
+                title: '装飾への応用',
+                description: '`content: "";` を指定した疑似要素は、`display: block`や`position`プロパティと組み合わせることで、様々な装飾に応用できます。例えば、タイトルの下線を部分的にデザインしたり、背景に図形を追加したりできます。',
+                initialHtml: '<h2 class="title">セクションタイトル</h2>',
+                initialCss: `.title {
+    position: relative;
+    display: inline-block;
+    padding-bottom: 5px;
+}
+
+.title::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 50%;
+    height: 3px;
+    background-color: #ef4444;
+}`,
+                initialJs: '',
+                exercise: '`::after`の`width`を`100%`に、`background-color`を`#22c55e`に変更してみましょう。'
+            },
+            {
+                title: 'カスタムリストマーカー',
+                description: '疑似要素は、リストのマーカー（点）をカスタマイズするためにもよく使われます。元のマーカーを`list-style: none;`で非表示にし、`::before`で独自のマーカー（記号や画像など）を追加します。',
+                initialHtml: `<ul>
+    <li>アイテム 1</li>
+    <li>アイテム 2</li>
+</ul>`,
+                initialCss: `ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+li {
+    padding-left: 20px;
+    position: relative;
+}
+
+li::before {
+    content: "✅"; /* チェックマークをマーカーにする */
+    position: absolute;
+    left: 0;
+}`,
+                initialJs: '',
+                exercise: '`::before`の`content`を`"➡️"`に変更して、マーカーを矢印にしてみましょう。'
+            }
+        ]
+    },
+    // =================================================================
     // Chapter 4: JavaScriptの基本
     // =================================================================
     {
@@ -574,6 +744,125 @@ if (savedMemo) {
             }
         ]
     },
+    {
+        id: 'js-array-methods',
+        chapter: 'JavaScriptの応用',
+        title: '配列の便利なメソッド',
+        pages: [
+            {
+                title: 'mapメソッド',
+                description: '`map`メソッドは、配列の各要素に対して指定した処理を行い、その結果から新しい配列を作成します。元の配列は変更されません。',
+                initialHtml: '<!-- HTMLは空でOK -->',
+                initialCss: '/* CSSは不要です */',
+                initialJs: `const numbers = [1, 2, 3, 4];
+
+const doubledNumbers = numbers.map(function(num) {
+  return num * 2;
+});
+
+console.log(doubledNumbers); // [2, 4, 6, 8]`,
+                exercise: '`numbers`配列の各要素を3倍した新しい配列を作成し、コンソールに出力してみましょう。'
+            },
+            {
+                title: 'filterメソッド',
+                description: '`filter`メソッドは、配列の各要素に対して条件をチェックし、その条件を満たす（trueを返す）要素だけを集めた新しい配列を作成します。',
+                initialHtml: '<!-- HTMLは空でOK -->',
+                initialCss: '/* CSSは不要です */',
+                initialJs: `const numbers = [1, 2, 3, 4, 5, 6];
+
+const evenNumbers = numbers.filter(function(num) {
+  return num % 2 === 0;
+});
+
+console.log(evenNumbers); // [2, 4, 6]`,
+                exercise: '`numbers`配列の中から、3より大きい数値だけを抽出した新しい配列を作成し、コンソールに出力してみましょう。'
+            },
+            {
+                title: 'findメソッド',
+                description: '`find`メソッドは、配列の要素の中から、指定した条件に最初に一致した「要素そのもの」を返します。一致する要素が見つからない場合は`undefined`を返します。',
+                initialHtml: '<!-- HTMLは空でOK -->',
+                initialCss: '/* CSSは不要です */',
+                initialJs: `const users = [
+  { id: 1, name: '山田' },
+  { id: 2, name: '佐藤' },
+  { id: 3, name: '鈴木' }
+];
+
+const user = users.find(function(u) {
+  return u.id === 2;
+});
+
+console.log(user); // { id: 2, name: '佐藤' }`,
+                exercise: '`users`配列の中から、`name`が「鈴木」のユーザーオブジェクトを見つけて、コンソールに出力してみましょう。'
+            }
+        ]
+    },
+    {
+        id: 'js-async-advanced',
+        chapter: 'JavaScriptの応用',
+        title: '非同期処理(発展)',
+        pages: [
+            {
+                title: 'Promiseとは？',
+                description: 'Promiseは、非同期処理の最終的な完了（または失敗）とその結果の値を表現するオブジェクトです。`then`メソッドで成功時の処理を、`catch`メソッドで失敗時の処理を記述できます。',
+                initialHtml: '<!-- HTMLは空でOK -->',
+                initialCss: '/* CSSは不要です */',
+                initialJs: `const myPromise = new Promise((resolve, reject) => {
+  // 1秒後に成功として解決する
+  setTimeout(() => {
+    resolve("成功しました！");
+  }, 1000);
+});
+
+myPromise
+  .then((result) => {
+    console.log(result);
+  })
+  .catch((error) => {
+    console.error(error);
+  });`,
+                exercise: '`resolve("成功しました！")`を`reject("失敗しました...")`に変更して、`catch`ブロックが実行されることを確認してみましょう。'
+            },
+            {
+                title: 'fetch APIによるデータ取得',
+                description: '`fetch`は、ネットワークリクエストを行うためのモダンなAPIで、Promiseを返します。外部のAPIからデータを取得する際によく使われます。`response.json()`で、取得したデータをJSON形式からJavaScriptオブジェクトに変換します。',
+                initialHtml: '<p id="result"></p>',
+                initialCss: 'p { font-family: sans-serif; }',
+                initialJs: `const url = 'https://jsonplaceholder.typicode.com/posts/1';
+const resultEl = document.getElementById('result');
+
+fetch(url)
+  .then(response => response.json())
+  .then(data => {
+    resultEl.textContent = data.title;
+  })
+  .catch(error => {
+    console.error('データの取得に失敗しました', error);
+  });`,
+                exercise: '`url`の最後の数値を`1`から`5`に変更して、別の投稿のタイトルが表示されることを確認してみましょう。'
+            },
+            {
+                title: 'async/await',
+                description: '`async/await`は、Promiseをより直感的に、同期処理のような見た目で書くための構文です。`async`を付けた関数内で、Promiseを返す処理の前に`await`を置くと、処理が完了するまで待機してくれます。',
+                initialHtml: '<img id="cat-image" src="" alt="猫の画像" width="300">',
+                initialCss: 'img { border: 2px solid #ccc; }',
+                initialJs: `const catImageEl = document.getElementById('cat-image');
+
+async function fetchCatImage() {
+  try {
+    const response = await fetch('https://api.thecatapi.com/v1/images/search');
+    const data = await response.json();
+    catImageEl.src = data[0].url; // 配列で返ってくるので最初の要素を指定
+  } catch (error) {
+    console.error('画像の取得に失敗しました', error);
+  }
+}
+
+fetchCatImage();`,
+                exercise: '`fetchCatImage`関数をもう一度呼び出す（`fetchCatImage();`を追記する）と、毎回違う猫の画像が表示されることを確認してみましょう。'
+            }
+        ]
+    },
     // =================================================================
     // Chapter 6: 総まとめプロジェクト
     // =================================================================
@@ -659,7 +948,6 @@ if (savedMemo) {
             }
         ]
     },
-
     {
         id: 'final-project',
         chapter: '総まとめプロジェクト',
@@ -761,6 +1049,98 @@ decrementButton.addEventListener('click', function() {
   countDisplay.textContent = count; // 表示を更新
 });`,
                 exercise: 'マイナスボタンを押した時に、数値が0未満にならないように`if`文を使って処理を修正してみましょう。'
+            }
+        ]
+    },
+    {
+        id: 'project-todo-app',
+        chapter: '総まとめプロジェクト',
+        title: 'シンプルなTodoアプリ',
+        pages: [
+            {
+                title: '1. HTMLで骨格を作る',
+                description: 'Todoアプリを作成します。まずはHTMLで、タスク入力用のフォームと、タスクリストを表示するための`<ul>`要素を準備します。',
+                initialHtml: `<div class="todo-app">
+    <h1>Todoリスト</h1>
+    <form id="add-form">
+        <input type="text" id="task-input" placeholder="新しいタスクを入力" required>
+        <button type="submit">追加</button>
+    </form>
+    <ul id="task-list"></ul>
+</div>`,
+                initialCss: '',
+                initialJs: '',
+                exercise: '`<form>`と`<ul>`の間（`</form>`の後）に、`<hr>`タグを追加して、入力フォームとリストの間に区切り線を入れてみましょう。'
+            },
+            {
+                title: '2. CSSで見た目を整える',
+                description: '次にある程度見栄えが良くなるようにCSSでスタイルを適用します。Flexboxを使って中央に配置し、フォームやリストのスタイルを調整します。',
+                initialHtml: `<div class="todo-app">
+    <h1>Todoリスト</h1>
+    <form id="add-form">
+        <input type="text" id="task-input" placeholder="新しいタスクを入力" required>
+        <button type="submit">追加</button>
+    </form>
+    <ul id="task-list"></ul>
+</div>`,
+                initialCss: `body { font-family: sans-serif; background-color: #f4f7f9; }
+.todo-app {
+    max-width: 500px;
+    margin: 50px auto;
+    background: white;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+#add-form { display: flex; gap: 10px; }
+#task-input { flex-grow: 1; padding: 10px; border: 1px solid #ddd; border-radius: 4px; }
+button { padding: 10px 15px; background-color: #3b82f6; color: white; border: none; border-radius: 4px; }
+#task-list { list-style: none; padding: 0; margin-top: 20px; }`,
+                initialJs: '',
+                exercise: '追加ボタンにマウスが乗った時（`:hover`）の背景色を`#2563eb`に変更するスタイルを追加してください。'
+            },
+            {
+                title: '3. JavaScriptで機能実装',
+                description: '最後にJavaScriptでTodoアプリの心臓部を実装します。フォームが送信されたら新しいタスクをリストに追加し、削除ボタンが押されたらそのタスクをリストから削除します。',
+                initialHtml: `<div class="todo-app">
+    <h1>Todoリスト</h1>
+    <form id="add-form">
+        <input type="text" id="task-input" placeholder="新しいタスクを入力" required>
+        <button type="submit">追加</button>
+    </form>
+    <ul id="task-list"></ul>
+</div>`,
+                initialCss: `body { font-family: sans-serif; background-color: #f4f7f9; } .todo-app { max-width: 500px; margin: 50px auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); } #add-form { display: flex; gap: 10px; } #task-input { flex-grow: 1; padding: 10px; border: 1px solid #ddd; border-radius: 4px; } button { padding: 10px 15px; background-color: #3b82f6; color: white; border: none; border-radius: 4px; cursor: pointer; } button:hover { background-color: #2563eb; } #task-list { list-style: none; padding: 0; margin-top: 20px; } .task-item { display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px solid #eee; } .delete-button { background-color: #ef4444; } .delete-button:hover { background-color: #dc2626; }`,
+                initialJs: `const addForm = document.getElementById('add-form');
+const taskInput = document.getElementById('task-input');
+const taskList = document.getElementById('task-list');
+
+addForm.addEventListener('submit', function(event) {
+    event.preventDefault(); // フォームのデフォルトの送信を防ぐ
+    addTask(taskInput.value);
+    taskInput.value = ''; // 入力欄をクリア
+});
+
+function addTask(taskText) {
+    const li = document.createElement('li');
+    li.className = 'task-item';
+
+    const span = document.createElement('span');
+    span.textContent = taskText;
+
+    const deleteButton = document.createElement('button');
+    deleteButton.textContent = '削除';
+    deleteButton.className = 'delete-button';
+
+    deleteButton.addEventListener('click', function() {
+        taskList.removeChild(li);
+    });
+
+    li.appendChild(span);
+    li.appendChild(deleteButton);
+    taskList.appendChild(li);
+}`,
+                exercise: 'タスク（`span`要素）がクリックされた時に、取り消し線（`text-decoration: line-through;`）が付くように、新しいイベントリスナーを追加してみましょう。'
             }
         ]
     }
